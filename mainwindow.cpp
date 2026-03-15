@@ -160,9 +160,6 @@ void MainWindow::buildCards()
         if(!net.mac.isEmpty())
             text += "\nMAC: " + net.mac;
 
-        if(net.wireless)
-            text += " (WiFi)";
-
         netList << text;
     }
 

@@ -262,16 +262,17 @@ void HardwareManager::readDisk()
 
 void HardwareManager::readNetwork()
 {
+    networks.clear();
+
     QStringList names = mWMI.queryAll("Win32_NetworkAdapter","Name");
     QStringList macs  = mWMI.queryAll("Win32_NetworkAdapter","MACAddress");
 
-    int count = qMin(names.size(), macs.size());
-
-    for(int i=0;i<count;i++)
+    for(int i=0;i<names.size();i++)
     {
         QString name = names[i];
 
         if(name.contains("WAN Miniport",Qt::CaseInsensitive)) continue;
+        if(name.contains("Adapter",Qt::CaseInsensitive)) continue;
         if(name.contains("Kernel Debug",Qt::CaseInsensitive)) continue;
         if(name.contains("Virtual",Qt::CaseInsensitive)) continue;
         if(name.contains("VMware",Qt::CaseInsensitive)) continue;
@@ -281,7 +282,6 @@ void HardwareManager::readNetwork()
         NetworkInfo net;
 
         net.name = name;
-        net.mac  = macs[i];
 
         networks.append(net);
     }
